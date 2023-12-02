@@ -12,19 +12,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  datasource:
-    url: ${PETSTORE_PRODUCT_SERVICE_DB_URL}
-    username: ${PETSTORE_PRODUCT_SERVICE_DB_USER}
-    password: ${PETSTORE_PRODUCT_SERVICE_DB_PASSWORD}
-  flyway:
-    locations: classpath:db.migration
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: none
-      show-sql: true
 
 management:
   endpoints:

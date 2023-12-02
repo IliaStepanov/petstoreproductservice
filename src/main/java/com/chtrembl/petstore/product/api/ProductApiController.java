@@ -1,15 +1,13 @@
 package com.chtrembl.petstore.product.api;
 
-import com.chtrembl.petstore.product.model.ContainerEnvironment;
-import com.chtrembl.petstore.product.model.DataPreload;
-import com.chtrembl.petstore.product.model.ModelApiResponse;
-import com.chtrembl.petstore.product.model.Product;
-import com.chtrembl.petstore.product.repository.CategoryRepository;
-import com.chtrembl.petstore.product.repository.ProductRepository;
-import com.chtrembl.petstore.product.repository.TagRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiParam;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -17,16 +15,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.List;
+import com.chtrembl.petstore.product.model.ContainerEnvironment;
+import com.chtrembl.petstore.product.model.DataPreload;
+import com.chtrembl.petstore.product.model.ModelApiResponse;
+import com.chtrembl.petstore.product.model.Product;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.annotations.ApiParam;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-12-21T10:17:09.908-05:00")
 
@@ -45,15 +51,6 @@ public class ProductApiController implements ProductApi {
 
 	@Autowired
 	private DataPreload dataPreload;
-
-	@Autowired
-	private CategoryRepository categoryRepository;
-
-	@Autowired
-	private ProductRepository productRepository;
-
-	@Autowired
-	private TagRepository tagRepository;
 
 	@Override
 	public DataPreload getBeanToBeAutowired() {
@@ -104,7 +101,7 @@ public class ProductApiController implements ProductApi {
 					"PetStoreProductService incoming GET request to petstoreproductservice/v2/pet/findProductsByStatus?status=%s",
 					status));
 			try {
-				String petsJSON = new ObjectMapper().writeValueAsString(productRepository.findAll());
+				String petsJSON = new ObjectMapper().writeValueAsString(this.getPreloadedProducts());
 				ApiUtil.setResponse(request, "application/json", petsJSON);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch (JsonProcessingException e) {

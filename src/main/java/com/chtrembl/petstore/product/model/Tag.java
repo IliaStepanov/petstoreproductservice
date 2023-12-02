@@ -2,17 +2,11 @@ package com.chtrembl.petstore.product.model;
 
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * Tag
@@ -20,13 +14,8 @@ import javax.persistence.Table;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-12-20T15:31:39.272-05:00")
 
-@Entity
-@Table(name = "[tag]", schema = "public")
-@NoArgsConstructor
-@AllArgsConstructor
 public class Tag {
 	@JsonProperty("id")
-	@Id
 	private Long id = null;
 
 	@JsonProperty("name")
